@@ -48,12 +48,9 @@ class MouseButtonEvent:
         self.button = button
         self.action = action
         self.mods = mods
-        print(f"Creating new mouse button event with {button}, {action}, {mods}")
 
     def check(self, requested_button, requested_action, requested_mods):
-        print(f"Checking mouse event: {self.button} {requested_button} + {self.action} {requested_action} + {self.mods} {requested_mods}")
         if self.button == requested_button:
             if self.action == requested_action:
                 if self.mods == requested_mods:
-                    print("Returning true")
                     return True
