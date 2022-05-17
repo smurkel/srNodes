@@ -14,3 +14,14 @@ node_editor_context_menu_visible = False
 node_editor_context_menu_position = [0, 0]
 node_editor_context_menu_size = [200, 300]
 node_list = list()
+node_type_colors = dict()
+
+node_type_colors[1] = (1.0, 0.0, 0.0, 1.0)
+node_type_colors[2] = (0.0, 1.0, 0.0, 1.0)
+node_type_colors[4] = (1.0, 1.0, 0.0, 1.0)
+
+connector_radius = 5
+connector_segments = 16
+connector_vertical_offset = -2
+connector_horizontal_offset = -8
+

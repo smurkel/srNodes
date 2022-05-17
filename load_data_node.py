@@ -7,12 +7,15 @@ class LoadDataNode(Node):
         self.type = Node.TYPE_LOAD
         self.label = "Load data"
         self.header_color = (0.5, 0.7, 0.2)
-        self.input.append(TextAttribute())
-        self.size = [219, 150]
+        self.add_output(FileAttribute("File path selection"))
+        self.size = [216, 150]
 
-    ## Probably best to use a decorator here!
-    @deco
-    def render():
-        ## Node header
-        imgui.text("Select data source")
-        imgui.button("Browse")
+
+    def render_node_body(self):
+        pass
+
+    def render(self):
+        super(LoadDataNode, self).render_start()
+        self.render_node_body()
+        super(LoadDataNode, self).render_body()
+        super(LoadDataNode, self).render_end()
