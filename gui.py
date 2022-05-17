@@ -3,6 +3,9 @@ from imgui.integrations.glfw import GlfwRenderer
 import config as cfg
 import input
 from load_data_node import *
+from register_node import *
+from microscope_parameters_node import *
+from reconstruction_node import *
 
 impl = None
 
@@ -44,11 +47,17 @@ def node_editor_window():
             imgui.text("Select node to add")
             imgui.separator()
             add_node_load, _ = imgui.menu_item("Load dataset")
+            add_node_system_parameters, _ = imgui.menu_item("Microscope parameters")
+            add_node_register, _ = imgui.menu_item("Register frames")
+            add_node_reconstruction, _ = imgui.menu_item("Reconstruction (output)")
             if add_node_load:
-                LoadDataNode(cfg.node_editor_context_menu_position)
-                for node in cfg.node_list:
-                    print(node)
-
+                LoadDataNode()
+            if add_node_register:
+                RegisterNode()
+            if add_node_system_parameters:
+                MicroscopeParametersNode()
+            if add_node_reconstruction:
+                ReconstructionNode()
             if not imgui.is_window_hovered(imgui.HOVERED_ALLOW_WHEN_BLOCKED_BY_ACTIVE_ITEM):
                 cfg.node_editor_context_menu_visible = True
             imgui.end()

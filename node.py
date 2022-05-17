@@ -12,14 +12,16 @@ class Node(object):
     TYPE_NONE = 1
     TYPE_LOAD = 2
     TYPE_REGISTER = 4
-    TYPE_SPATIAL_FILTER = 8
-    TYPE_TEMPORAL_FILTER = 16
+    TYPE_SYSTEM_PARAMETERS = 8
+    TYPE_SPATIAL_FILTER = 16
+    TYPE_TEMPORAL_FILTER = 32
+    TYPE_RECONSTRUCTION = 64
 
-    def __init__(self, position):
+    def __init__(self):
         self.id = next(Node.idgen)
         self.label = ""
         self.type = Node.TYPE_NONE
-        self.position = position
+        self.position = cfg.node_editor_context_menu_position
         self.size = (0, 0)
         # In/outputs
         self.input = list()
@@ -29,8 +31,6 @@ class Node(object):
         cfg.node_list.append(self)
         cfg.node_editor_context_menu_visible = False
 
-        ## Cosmetic:
-        self.header_color = (0.5, 0.5, 0.5)
 
     def __eq__(self, other):
         if type(self) is type(other):
@@ -50,20 +50,21 @@ class Node(object):
 
     def add_input(self, input_attribute):
         input_attribute.input = True
-        input_attribute.colour = cfg.node_type_colors[self.type]
         self.input.append(input_attribute)
 
     def add_output(self, output_attribute):
         output_attribute.input = False
-        output_attribute.colour = cfg.node_type_colors[self.type]
         self.output.append(output_attribute)
 
     def render_start(self):
         imgui.push_id(str(self.id))
-        imgui.push_style_color(imgui.COLOR_HEADER, *self.header_color)
+        imgui.push_style_color(imgui.COLOR_BORDER, *cfg.node_type_colors[self.type])
+        imgui.push_style_color(imgui.COLOR_TITLE_BACKGROUND, *cfg.node_type_colors[self.type])
+        imgui.push_style_color(imgui.COLOR_TITLE_BACKGROUND_ACTIVE, *cfg.node_type_colors[self.type])
+        imgui.push_style_color(imgui.COLOR_TITLE_BACKGROUND_COLLAPSED, *cfg.node_type_colors[self.type])
         imgui.set_next_window_size(*self.size, imgui.ONCE)
         imgui.set_next_window_position(*self.position, imgui.ONCE)
-        imgui.begin(self.label + "##" + str(self.id))
+        imgui.begin(self.label + "##" + str(self.id), flags = imgui.WINDOW_NO_RESIZE)
 
     def render_body(self):
         for attribute in self.input:
@@ -74,7 +75,7 @@ class Node(object):
     def render_end(self):
         imgui.end()
         imgui.pop_id()
-        imgui.pop_style_color(1)
+        imgui.pop_style_color(4)
 
 
     def deco(self, render_function):
@@ -98,7 +99,6 @@ class Attribute(object):
         self.type = Attribute.TYPE_NONE
         self.connectable = False
         self.linked_nodes = list()
-        self.colour = (0.0, 0.0, 0.0, 1.0)
         self.value = None
         self.draw_start = None
         self.draw_end = None
@@ -146,6 +146,7 @@ class InputTextAttribute(Attribute):
     def __init__(self, label = ""):
         super(type(self), self).__init__(label)
         self.type = Attribute.TYPE_TEXT
+        self.colour = cfg.attribute_type_colors[self.type]
         self.value = ""
         self.width = 200
         self.connectable = True
@@ -166,6 +167,7 @@ class FileAttribute(Attribute):
     def __init__(self, label = ""):
         super(type(self), self).__init__(label)
         self.type = Attribute.TYPE_FILE
+        self.colour = cfg.attribute_type_colors[self.type]
         self.value = ""
         self.connectable = True
 
@@ -176,6 +178,8 @@ class FileAttribute(Attribute):
 
     def render_attribute_body(self):
         imgui.push_item_width(160)
+        if not self.label == "":
+            imgui.text(self.label)
         _, self.value = imgui.input_text("##", self.value, 256)
         imgui.pop_item_width()
         imgui.same_line()
@@ -187,6 +191,7 @@ class FloatAttribute(Attribute):
     def __init__(self, label = ""):
         super(type(self), self).__init__(label)
         self.type = Attribute.TYPE_FLOAT
+        self.colour = cfg.attribute_type_colors[self.type]
         self.value = 0.0
         self.connectable = True
 
@@ -199,3 +204,4 @@ class FloatAttribute(Attribute):
         imgui.push_item_width(50)
         _, self.value = imgui.input_float(self.label, self.value, 0, 0, format = "%.0f")
         imgui.pop_item_width()
+

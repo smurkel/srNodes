@@ -2,11 +2,10 @@ from node import *
 
 class LoadDataNode(Node):
 
-    def __init__(self, position):
-        super(LoadDataNode, self).__init__(position)
+    def __init__(self):
+        super(LoadDataNode, self).__init__()
         self.type = Node.TYPE_LOAD
         self.label = "Load data"
-        self.header_color = (0.5, 0.7, 0.2)
         self.add_output(FileAttribute("File path selection"))
         self.size = [216, 150]
 
