@@ -64,7 +64,9 @@ class Node(object):
         imgui.push_style_color(imgui.COLOR_TITLE_BACKGROUND_COLLAPSED, *cfg.node_type_colors[self.type])
         imgui.set_next_window_size(*self.size, imgui.ONCE)
         imgui.set_next_window_position(*self.position, imgui.ONCE)
-        imgui.begin(self.label + "##" + str(self.id), flags = imgui.WINDOW_NO_RESIZE)
+        _, stay_open = imgui.begin(self.label + "##" + str(self.id), flags = imgui.WINDOW_NO_RESIZE, closable = True)
+        if not stay_open:
+            cfg.node_list.remove(self)
 
     def render_body(self):
         for attribute in self.input:
@@ -92,6 +94,7 @@ class Attribute(object):
     TYPE_TEXT = 2
     TYPE_FILE = 4
     TYPE_FLOAT = 8
+    TYPE_SYSTEM_PARAMETERS = 16
 
     def __init__(self, label = ""):
         self.id = next(Attribute.idgen)
@@ -115,13 +118,20 @@ class Attribute(object):
 
     def render_start(self):
         imgui.push_id(f"Attribute{self.id}")
+        imgui.begin_group()
         self.draw_start = imgui.get_cursor_screen_pos()
-
 
     def render_end(self):
         self.draw_end = imgui.get_cursor_screen_pos()
         self.render_connector()
+        imgui.end_group()
+        # Connector drag & drop source must be placed here.
+        if not self.id == cfg.active_connector:
+            if imgui.begin_drag_drop_source():
+                imgui.set_drag_drop_payload('attribute_connector', str(self.id).encode())
+                imgui.end_drag_drop_source()
         imgui.pop_id()
+
 
     def render(self):
         self.render_start()
@@ -205,3 +215,24 @@ class FloatAttribute(Attribute):
         _, self.value = imgui.input_float(self.label, self.value, 0, 0, format = "%.0f")
         imgui.pop_item_width()
 
+class SystemParametersAttribute(Attribute):
+    def __init__(self, label = ""):
+        super(type(self), self).__init__(label)
+        self.type = Attribute.TYPE_SYSTEM_PARAMETERS
+        self.colour = cfg.attribute_type_colors[self.type]
+        self.connectable = True
+        self.pixel_size_nm = 65
+        self.dark_adu = 100
+        self.adu_per_photon = 0.45
+
+    def render(self):
+        super(type(self), self).render_start()
+        self.render_attribute_body()
+        super(type(self), self).render_end()
+
+    def render_attribute_body(self):
+        imgui.push_item_width(50)
+        _, self.pixel_size_nm = imgui.input_int("Pixel size (nm)", self.pixel_size_nm, 0)
+        _, self.camera_offset = imgui.input_int("Dark counts", self.dark_adu, 0)
+        _, self.camera_adu_per_photon = imgui.input_float("ADU per photon", self.adu_per_photon, 0, format = "%.2f")
+        imgui.pop_item_width()

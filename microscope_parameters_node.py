@@ -6,9 +6,8 @@ class MicroscopeParametersNode(Node):
         super(type(self), self).__init__()
         self.type = Node.TYPE_SYSTEM_PARAMETERS
         self.label = "System parameters"
-        self.add_input(InputTextAttribute("placeholder"))
-        self.add_output(InputTextAttribute("placeholder"))
-        self.size = [216, 150]
+        self.add_output(SystemParametersAttribute())
+        self.size = [216, 100]
 
     def render_node_body(self):
         pass

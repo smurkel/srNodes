@@ -29,7 +29,7 @@ def exit():
 
 def gui():
     node_editor_window()
-    #debug_window()
+    debug_window()
 
 def node_editor_window():
     imgui.begin("Node editor", flags = imgui.WINDOW_NO_TITLE_BAR | imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_MOVE | imgui.WINDOW_NO_BRING_TO_FRONT_ON_FOCUS)
@@ -68,13 +68,18 @@ def node_editor_window():
     imgui.end()
 
 def debug_window():
-    imgui.begin("Debug window")
-    imgui.begin_child("child1", 0.0, 100, border = True)
-    imgui.text("This is in child 1")
-    imgui.end_child()
-    imgui.begin_child("child2", 0.0, 0.0, border=True)
-    imgui.text("This is in child 2")
-    imgui.end_child()
+    imgui.begin("Debug window", flags = imgui.WINDOW_NO_MOVE)
+    imgui.button("drag")
+    if imgui.begin_drag_drop_source():
+        imgui.set_drag_drop_payload('connector', b'connector_0')
+        imgui.end_drag_drop_source()
+    imgui.button("drop")
+    if imgui.begin_drag_drop_target():
+        payload = imgui.accept_drag_drop_payload('connector')
+        if payload is not None:
+            print("Received", payload)
+        imgui.end_drag_drop_target()
+
 
     imgui.end()
 

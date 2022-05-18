@@ -39,3 +39,4 @@ connector_segments = 16
 connector_vertical_offset = -2
 connector_horizontal_offset = -8
 
+active_connector = None
