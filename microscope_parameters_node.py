@@ -15,5 +15,4 @@ class MicroscopeParametersNode(Node):
     def render(self):
         super(type(self), self).render_start()
         self.render_node_body()
-        super(type(self), self).render_body()
         super(type(self), self).render_end()

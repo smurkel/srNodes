@@ -34,7 +34,7 @@ attribute_type_colors[8] = (191/255, 215/255, 234/255, 1.0)
 attribute_type_colors[16] = (44/255, 102/255, 110/255, 1.0)
 attribute_type_colors[32] = (155/255, 80/255, 148/255, 1.0)
 
-connector_radius = 5
+connector_radius = 5 # was 5
 connector_segments = 16
 connector_vertical_offset = -2
 connector_horizontal_offset = -8

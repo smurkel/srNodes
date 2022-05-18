@@ -16,5 +16,4 @@ class LoadDataNode(Node):
     def render(self):
         super(LoadDataNode, self).render_start()
         self.render_node_body()
-        super(LoadDataNode, self).render_body()
         super(LoadDataNode, self).render_end()

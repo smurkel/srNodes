@@ -19,8 +19,9 @@ def on_update():
     imgui.new_frame()
 
     imgui.push_style_var(imgui.STYLE_WINDOW_ROUNDING, 0.0)
+    imgui.push_style_var(imgui.STYLE_WINDOW_MIN_SIZE, (10, 10))
     gui()
-    imgui.pop_style_var(1)
+    imgui.pop_style_var(2)
     imgui.render()
     impl.render(imgui.get_draw_data())
 
@@ -29,10 +30,8 @@ def exit():
 
 def gui():
     node_editor_window()
-    debug_window()
 
 def node_editor_window():
-    imgui.begin("Node editor", flags = imgui.WINDOW_NO_TITLE_BAR | imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_MOVE | imgui.WINDOW_NO_BRING_TO_FRONT_ON_FOCUS)
 
     ## Open context menu
     if input.get_mouse_event(button = input.MOUSE_BUTTON_RIGHT, action = input.MOUSE_BUTTON_RELEASE):
@@ -65,7 +64,6 @@ def node_editor_window():
     ## Node editor
     for node in cfg.node_list:
         node.render()
-    imgui.end()
 
 def debug_window():
     imgui.begin("Debug window", flags = imgui.WINDOW_NO_MOVE)
