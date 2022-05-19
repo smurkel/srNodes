@@ -14,6 +14,6 @@ class RegisterNode(Node):
         pass
 
     def render(self):
-        super(type(self), self).render_start()
+        super(type(self), self).gui_start()
         self.render_node_body()
-        super(type(self), self).render_end()
+        super(type(self), self).gui_end()

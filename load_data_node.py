@@ -14,6 +14,6 @@ class LoadDataNode(Node):
         imgui.text("Select source file")
 
     def render(self):
-        super(LoadDataNode, self).render_start()
+        super(LoadDataNode, self).gui_start()
         self.render_node_body()
-        super(LoadDataNode, self).render_end()
+        super(LoadDataNode, self).gui_end()

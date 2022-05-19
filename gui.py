@@ -59,25 +59,34 @@ def node_editor_window():
                 ReconstructionNode()
             if not imgui.is_window_hovered(imgui.HOVERED_ALLOW_WHEN_BLOCKED_BY_ACTIVE_ITEM):
                 cfg.node_editor_context_menu_visible = True
+
+            ## Close context menu if clicked outside of it
+            if input.get_mouse_event(input.MOUSE_BUTTON_LEFT,
+                                     action=input.MOUSE_BUTTON_CLICK) and not imgui.is_window_hovered():
+                cfg.node_editor_context_menu_visible = False
             imgui.end()
+
 
     ## Node editor
     for node in cfg.node_list:
         node.render()
+    if not input.get_mouse_button(input.MOUSE_BUTTON_LEFT):
+        cfg.active_connector = None
 
 def debug_window():
-    imgui.begin("Debug window", flags = imgui.WINDOW_NO_MOVE)
-    imgui.button("drag")
+    imgui.begin("drag source", flags = imgui.WINDOW_NO_MOVE)
     if imgui.begin_drag_drop_source():
-        imgui.set_drag_drop_payload('connector', b'connector_0')
+        imgui.set_drag_drop_payload('misc', str(0).encode())
         imgui.end_drag_drop_source()
-    imgui.button("drop")
-    if imgui.begin_drag_drop_target():
-        payload = imgui.accept_drag_drop_payload('connector')
-        if payload is not None:
-            print("Received", payload)
-        imgui.end_drag_drop_target()
-
-
     imgui.end()
+    imgui.begin("drop")
+    imgui.begin_child("drop child", 0.0, 0.0)
+    imgui.end_child()
+    if imgui.begin_drag_drop_target():
+        payload = imgui.accept_drag_drop_payload('misc')
+        if payload is not None:
+            print("drop")
+        imgui.end_drag_drop_target()
+    imgui.end()
+
 
