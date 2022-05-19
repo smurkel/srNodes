@@ -9,6 +9,16 @@ import input
 tkroot = tk.Tk()
 tkroot.withdraw()
 
+connector_draw_list = list()
+
+def render_connectors():
+    global connector_draw_list
+    draw_list = imgui.get_overlay_draw_list()
+    for connector in connector_draw_list:
+        draw_list.add_circle_filled(connector[0], connector[1], cfg.connector_radius,
+                            imgui.get_color_u32_rgba(*connector[2]), cfg.connector_segments)
+    connector_draw_list = list()
+
 class Node(object):
     idgen = count(1)
     ## typedef
@@ -162,10 +172,11 @@ class Attribute(object):
             imgui.end()
             imgui.pop_style_color(4)
             # Render the connector blob
-            draw_list = imgui.get_overlay_draw_list()
-            draw_list.add_circle_filled(self.connector_position[0], self.connector_position[1], cfg.connector_radius, imgui.get_color_u32_rgba(*self.colour), cfg.connector_segments)
+            connector_draw_list.append((self.connector_position[0], self.connector_position[1], self.colour))
+
 
             # render connections - output to input only!
+            draw_list = imgui.get_overlay_draw_list()
             if not self.input:
                 for partner in self.linked_attributes:
                     partner_position = partner.connector_position

@@ -32,7 +32,6 @@ def gui():
     node_editor_window()
 
 def node_editor_window():
-
     ## Open context menu
     if input.get_mouse_event(button = input.MOUSE_BUTTON_RIGHT, action = input.MOUSE_BUTTON_RELEASE):
         cfg.node_editor_context_menu_visible = True
@@ -72,7 +71,7 @@ def node_editor_window():
         node.render()
     if not input.get_mouse_button(input.MOUSE_BUTTON_LEFT):
         cfg.active_connector = None
-
+    render_connectors()
 def debug_window():
     imgui.begin("drag source", flags = imgui.WINDOW_NO_MOVE)
     if imgui.begin_drag_drop_source():
