@@ -1,6 +1,7 @@
-window_width = 1000
+window_width = 1400
 window_height = 600
 window_title = "SRNodes editor"
+log_level = 3 # one of: error (0), info (1), trace (2)
 
 clear_color = (0.0, 0.0, 0.0, 1.0)
 color_background = (20/255, 20/255, 20/255)

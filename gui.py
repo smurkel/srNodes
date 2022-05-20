@@ -30,6 +30,7 @@ def exit():
 
 def gui():
     node_editor_window()
+    dataset_window()
 
 def node_editor_window():
     ## Open context menu
@@ -72,6 +73,10 @@ def node_editor_window():
     if not input.get_mouse_button(input.MOUSE_BUTTON_LEFT):
         cfg.active_connector = None
     render_connectors()
+
+def dataset_window():
+    pass
+
 def debug_window():
     imgui.begin("drag source", flags = imgui.WINDOW_NO_MOVE)
     if imgui.begin_drag_drop_source():
