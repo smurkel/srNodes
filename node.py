@@ -3,7 +3,7 @@ import imgui
 import config as cfg
 import tkinter as tk
 from tkinter import filedialog
-
+import config as cfg
 import input
 
 tkroot = tk.Tk()
@@ -41,7 +41,7 @@ class Node(object):
         self.output_attributes = list()
         self.n_inputs = 0
         self.n_outputs = 0
-        cfg.node_list.append(self)
+        cfg.current_project.nodes.append(self)
         cfg.node_editor_context_menu_visible = False
 
     def __eq__(self, other):
@@ -148,7 +148,7 @@ class Attribute(object):
             imgui.push_style_color(imgui.COLOR_DRAG_DROP_TARGET, 0.0, 1.0, 0.0, 1.0)
             imgui.begin(f"Attribute{self.id}", False, imgui.WINDOW_NO_TITLE_BAR | imgui.WINDOW_NO_MOVE | imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_COLLAPSE | imgui.WINDOW_NO_SAVED_SETTINGS | imgui.WINDOW_NO_SCROLLBAR | imgui.WINDOW_NO_SAVED_SETTINGS)
             ## Middle-mouse click deletes all connections
-            if input.get_mouse_event(input.MOUSE_BUTTON_MIDDLE, input.MOUSE_BUTTON_CLICK, pop_event = False) and imgui.is_window_hovered():
+            if input.get_mouse_event(input.MOUSE_BUTTON_MIDDLE, input.PRESS, pop_event = False) and imgui.is_window_hovered():
                 print(self.parent_node_id)
                 self.disconnect_all()
 

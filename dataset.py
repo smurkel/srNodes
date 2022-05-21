@@ -35,7 +35,6 @@ class Dataset:
         self.width = self.frames[0].width
         self.height = self.frames[0].height
         self.roi = (0, 0, self.width, self.height) # left, bottom, right, top
-        print(self.roi)
 
     def load(self):
         data = Image.open(self.path)

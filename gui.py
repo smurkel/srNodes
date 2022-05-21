@@ -38,7 +38,7 @@ def gui():
 
 def node_editor_window():
     ## Open context menu
-    if input.get_mouse_event(button = input.MOUSE_BUTTON_RIGHT, action = input.MOUSE_BUTTON_RELEASE):
+    if input.get_mouse_event(button = input.MOUSE_BUTTON_RIGHT, action = input.RELEASE):
         cfg.node_editor_context_menu_visible = True
         cfg.node_editor_context_menu_position = input.cursor_pos
 
@@ -66,13 +66,13 @@ def node_editor_window():
 
             ## Close context menu if clicked outside of it
             if input.get_mouse_event(input.MOUSE_BUTTON_LEFT,
-                                     action=input.MOUSE_BUTTON_CLICK) and not imgui.is_window_hovered():
+                                     action=input.PRESS) and not imgui.is_window_hovered():
                 cfg.node_editor_context_menu_visible = False
             imgui.end()
 
 
     ## Node editor
-    for node in cfg.node_list:
+    for node in cfg.current_project.nodes:
         node.render()
     if not input.get_mouse_button(input.MOUSE_BUTTON_LEFT):
         cfg.active_connector = None

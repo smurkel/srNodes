@@ -7,8 +7,8 @@ import input
 
 if __name__ == "__main__":
     application_window = window.start()
-    input.start(application_window)
     gui.start(application_window)
+    input.start(application_window)
     while not glfw.window_should_close(application_window):
 
         window.on_update()
