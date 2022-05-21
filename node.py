@@ -76,7 +76,7 @@ class Node(object):
         imgui.push_style_color(imgui.COLOR_TITLE_BACKGROUND_COLLAPSED, *cfg.node_type_colors[self.type])
         imgui.set_next_window_size(*self.size, imgui.ONCE)
         imgui.set_next_window_position(*self.position, imgui.ONCE)
-        _, stay_open = imgui.begin(self.label + "##" + str(self.id), flags = imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_BRING_TO_FRONT_ON_FOCUS, closable = True)
+        _, stay_open = imgui.begin(self.label + "##" + str(self.id), flags = imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_BRING_TO_FRONT_ON_FOCUS | imgui.WINDOW_NO_SAVED_SETTINGS, closable = True)
         if not stay_open:
             self.delete()
 
@@ -146,7 +146,7 @@ class Attribute(object):
             imgui.push_style_color(imgui.COLOR_BORDER, 0.0, 0.0, 0.0, 0.0)
             imgui.push_style_color(imgui.COLOR_BORDER_SHADOW, 0.0, 0.0, 0.0, 0.0)
             imgui.push_style_color(imgui.COLOR_DRAG_DROP_TARGET, 0.0, 1.0, 0.0, 1.0)
-            imgui.begin(f"Attribute{self.id}", flags = imgui.WINDOW_NO_TITLE_BAR | imgui.WINDOW_NO_MOVE | imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_COLLAPSE | imgui.WINDOW_NO_SAVED_SETTINGS | imgui.WINDOW_NO_SCROLLBAR)
+            imgui.begin(f"Attribute{self.id}", False, imgui.WINDOW_NO_TITLE_BAR | imgui.WINDOW_NO_MOVE | imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_COLLAPSE | imgui.WINDOW_NO_SAVED_SETTINGS | imgui.WINDOW_NO_SCROLLBAR | imgui.WINDOW_NO_SAVED_SETTINGS)
             ## Middle-mouse click deletes all connections
             if input.get_mouse_event(input.MOUSE_BUTTON_MIDDLE, input.MOUSE_BUTTON_CLICK, pop_event = False) and imgui.is_window_hovered():
                 print(self.parent_node_id)

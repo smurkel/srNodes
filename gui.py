@@ -1,6 +1,7 @@
 import imgui
 from imgui.integrations.glfw import GlfwRenderer
 import config as cfg
+import databrowser
 import input
 from load_data_node import *
 from register_node import *
@@ -8,14 +9,17 @@ from microscope_parameters_node import *
 from reconstruction_node import *
 
 impl = None
+import databrowser
 
 def start(window):
     global impl
     imgui.create_context()
     impl = GlfwRenderer(window)
+    databrowser.start()
 
 def on_update():
     impl.process_inputs()
+    databrowser.on_update()
     imgui.new_frame()
 
     imgui.push_style_var(imgui.STYLE_WINDOW_ROUNDING, 0.0)
@@ -30,7 +34,7 @@ def exit():
 
 def gui():
     node_editor_window()
-    dataset_window()
+    databrowser.data_browser_window()
 
 def node_editor_window():
     ## Open context menu
@@ -42,7 +46,7 @@ def node_editor_window():
     if cfg.node_editor_context_menu_visible:
         imgui.set_next_window_position(cfg.node_editor_context_menu_position[0], cfg.node_editor_context_menu_position[1])
         imgui.set_next_window_size(cfg.node_editor_context_menu_size[0], cfg.node_editor_context_menu_size[1])
-        if imgui.begin("##node_editor_context_menu", flags = imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_MOVE | imgui.WINDOW_NO_COLLAPSE | imgui.WINDOW_NO_TITLE_BAR):
+        if imgui.begin("##node_editor_context_menu", False, imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_MOVE | imgui.WINDOW_NO_COLLAPSE | imgui.WINDOW_NO_TITLE_BAR):
             imgui.text("Select node to add")
             imgui.separator()
             add_node_load, _ = imgui.menu_item("Load dataset")
@@ -75,10 +79,12 @@ def node_editor_window():
     render_connectors()
 
 def dataset_window():
-    pass
+    imgui.begin("dataset window", False, imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_COLLAPSE | imgui.NO_MOVE)
+
+    imgui.end()
 
 def debug_window():
-    imgui.begin("drag source", flags = imgui.WINDOW_NO_MOVE)
+    imgui.begin("drag source", False, imgui.WINDOW_NO_MOVE)
     if imgui.begin_drag_drop_source():
         imgui.set_drag_drop_payload('misc', str(0).encode())
         imgui.end_drag_drop_source()

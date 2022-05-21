@@ -43,3 +43,6 @@ connector_horizontal_offset = -8
 connection_line_color = (1.0, 1.0, 1.0, 1.0)
 connection_line_thickness = 2
 active_connector = None
+
+## Databrowser vars
+fbo_needs_update = False
