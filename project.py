@@ -7,6 +7,3 @@ class Project():
         self.dataset = None
         self.rois = list()
         self.nodes = list()
-
-
-

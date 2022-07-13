@@ -22,8 +22,21 @@ layout (binding = 0) uniform usampler2D image;
 out vec4 fragmentColor;
 
 in vec2 fUV;
+uniform vec3 roiColour;
+uniform float lineWidth;
+uniform float roiWidth;
+uniform float roiHeight;
 
 void main()
 {
-    fragmentColor = vec4(UV.x / 2048.0, UV.y / 2048.0, 0.0, 1.0);
+    float wScaleFac = max(1.0, roiWidth / roiHeight);
+    float hScaleFac = max(1.0, roiHeight / roiWidth);
+    float sharedScaleFac = max(roiWidth, roiHeight);
+    vec2 UV = vec2(fUV.x * wScaleFac, fUV.y * hScaleFac);
+    float dw = abs(-min(fUV.x, 1.0 - fUV.x) * max(1.0, roiWidth / roiHeight) * sharedScaleFac);
+    float dh = abs(-min(fUV.y, 1.0 - fUV.y) * max(1.0, roiHeight / roiWidth) * sharedScaleFac);
+    if ((dw < lineWidth) || (dh < lineWidth))
+        fragmentColor = vec4(roiColour, 1.0);
+    else
+        fragmentColor = vec4(0.0, 0.0, 0.0, 0.0);
 }

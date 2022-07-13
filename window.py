@@ -1,5 +1,5 @@
 import glfw
-import OpenGL.GL
+from OpenGL.GL import *
 import config as cfg
 
 window = None
@@ -18,6 +18,9 @@ def start():
     window = glfw.create_window(cfg.window_width, cfg.window_height, cfg.window_title, None, None)
     glfw.make_context_current(window)
 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+    glEnable(GL_BLEND)
+
     if not window:
         glfw.terminate()
         print("Could not initialize Window")
@@ -26,8 +29,8 @@ def start():
     return window
 
 def on_update():
-    OpenGL.GL.glClearColor(*cfg.clear_color)
-    OpenGL.GL.glClear(OpenGL.GL.GL_COLOR_BUFFER_BIT)
+    glClearColor(*cfg.clear_color)
+    glClear(GL_COLOR_BUFFER_BIT)
 
 def end_frame():
     glfw.swap_buffers(window)

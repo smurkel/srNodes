@@ -16,7 +16,18 @@ color_text = (0.9, 0.9, 0.85)
 
 image_viewer_pan_speed = 5.0
 image_viewer_zoom_step = 0.1
-
+image_viewer_zoom_max = 49.0
+image_viewer_zoom_min = 0.25
+image_viewer_histogram_bins = 100
+image_viewer_histogram_width = 411
+image_viewer_histogram_height = 60
+image_viewer_contrast_auto = True
+image_viewer_contrast_min = 0
+image_viewer_contrast_max = 2**16 - 1
+image_viewer_histogram_max_value = None
+image_viewer_histogram_max_value_options = [250, 500, 1000, 2000, 5000, 10000, 30000, 2**16-1]
+image_viewer_contrast_header_open = True
+image_viewer_roi_being_drawn = False
 node_editor_context_menu_visible = False
 node_editor_context_menu_position = [0, 0]
 node_editor_context_menu_size = [200, 300]
@@ -49,5 +60,3 @@ connection_line_color = (1.0, 1.0, 1.0, 1.0)
 connection_line_thickness = 2
 active_connector = None
 
-## Databrowser vars
-fbo_needs_update = False

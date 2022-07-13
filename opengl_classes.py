@@ -170,19 +170,31 @@ class IndexBuffer:
 
 class VertexArray:
     def __init__(self, vertexBuffer = None, indexBuffer = None):
+        self.vertexBuffer = None
+        self.indexBuffer = None
+        self.initialized = False
         if vertexBuffer:
-            self.vertexBuffer = vertexBuffer
-            self.indexBuffer = indexBuffer
-            self.vertexArrayObject = glGenVertexArrays(1)
-            glBindVertexArray(self.vertexArrayObject)
-            glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer.vertexBufferObject)
-            glEnableVertexAttribArray(0)
-            glEnableVertexAttribArray(1)
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 20, ctypes.cast(0, ctypes.c_void_p))
-            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 20, ctypes.cast(12, ctypes.c_void_p))
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer.indexBufferObject)
-            glBindVertexArray(0)
+            self.update(vertexBuffer, indexBuffer)
 
+    def init(self):
+        if self.initialized:
+            return
+        self.vertexArrayObject = glGenVertexArrays(1)
+        self.initialized = True
+
+    def update(self, vertexBuffer, indexBuffer):
+        if not self.initialized:
+            self.init()
+        self.vertexBuffer = vertexBuffer
+        self.indexBuffer = indexBuffer
+        glBindVertexArray(self.vertexArrayObject)
+        glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer.vertexBufferObject)
+        glEnableVertexAttribArray(0)
+        glEnableVertexAttribArray(1)
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 20, ctypes.cast(0, ctypes.c_void_p))
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 20, ctypes.cast(12, ctypes.c_void_p))
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer.indexBufferObject)
+        glBindVertexArray(0)
 
     def bind(self):
         glBindVertexArray(self.vertexArrayObject)

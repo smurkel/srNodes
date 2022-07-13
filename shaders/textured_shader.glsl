@@ -21,8 +21,13 @@ layout (binding = 0) uniform usampler2D image;
 out vec4 fragmentColor;
 
 in vec2 fUV;
+uniform float contrast_min;
+uniform float contrast_max;
 
 void main()
 {
-    fragmentColor = vec4(fUV, 0.0, 1.0);
+    float pixelValue = (float(texture(image, fUV)).r);
+    pixelValue -= contrast_min;
+    pixelValue /= (contrast_max - contrast_min);
+    fragmentColor = vec4(pixelValue, pixelValue, pixelValue, 1.0);
 }
